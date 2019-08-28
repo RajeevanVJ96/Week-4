@@ -14,6 +14,9 @@ public class DBManager {
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
 
+        Create c = new Create();
+        Read r = new Read();
+
 
         Class.forName(JDBC_DRIVER);
 
@@ -29,20 +32,21 @@ public class DBManager {
         String insert2 = "INSERT teams(name, colour) VALUES('MCFC', 'blue')";
         String insert3 = "INSERT teams(name, colour) VALUES('Liverpool', 'red')";
         String insert4 = "INSERT teams(name, colour) VALUES('Spurs', 'white')";
-        create(drop);
-        create(csql);
-        create(insert1);
-        create(insert2);
-        create(insert3);
-        create(insert4);
+        c.create(drop);
+        c.create(csql);
+        c.create(insert1);
+        c.create(insert2);
+        c.create(insert3);
+        c.create(insert4);
         String usql;
         usql = "UPDATE teams SET colour = 'black' WHERE id = 4";
-        create(usql);
+        c.create(usql);
         String dsql;
-        dsql = "DELETE teams WHERE id = 2";
+        dsql = "DELETE FROM teams WHERE id = 2";
+        c.create(dsql);
         String rsql;
         rsql = "SELECT * FROM teams";
-        ResultSet rs = read(rsql);
+        ResultSet rs = r.read(rsql);
 
         while(rs.next()){
             int id  = rs.getInt("id");
@@ -57,30 +61,18 @@ public class DBManager {
         stmt.close();
         conn.close();
     }
-
-    public static ResultSet read(String query) throws SQLException {
-        try {
-            stmt = conn.createStatement();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        ResultSet rs = stmt.executeQuery(query);
-        return rs;
-
-
-    }
 //
 //
-    public static void create(String sql) throws SQLException {
-        try {
-            stmt = conn.createStatement();
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-
-    }
+//    public static void create(String sql) throws SQLException {
+//        try {
+//            stmt = conn.createStatement();
+//            stmt.executeUpdate(sql);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//
+//    }
 
 }
