@@ -1,6 +1,7 @@
 package com.qa;
 
 import java.sql.*;
+import java.util.Scanner;
 
 public class DBManager {
 
@@ -22,17 +23,59 @@ public class DBManager {
 
         System.out.println("Connecting to database...");
         conn = DriverManager.getConnection(DB_URL,USER,PASS);
+        String drop = "DROP TABLE teams";
+        c.create(drop);
+        Scanner sc = new Scanner(System.in);
+        System.out.println("What do you wanna do?");
+        System.out.println("1: ADD TABLE");
+        System.out.println("2: ADD RECORD");
+        System.out.println("3: READ");
+        System.out.println("4: UPDATE");
+        System.out.println("5: DELETE");
+        System.out.println("enter: FINISH");
+        while(sc.hasNextInt()) {
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch(choice){
+                case 1:
+                    System.out.println("Enter SQL statement:");
+                    String sql = sc.nextLine();
+                    c.create(sql);
+                    break;
+                case 2:
+                    System.out.println("Enter SQL statement:");
+                    String sq12 = sc.nextLine();
+                    c.create(sq12);
+                    break;
+                case 3:
+                    System.out.println("Enter SQL statement:");
+                    String sql3 = sc.nextLine();
+                    r.read(sql3);
+                    break;
+                case 4:
+                    System.out.println("Enter SQL statement:");
+                    String sql4 = sc.nextLine();
+                    c.create(sql4);
+                    break;
+                case 5:
+                    System.out.println("Enter SQL statement");
+                    String sql5 = sc.nextLine();
+                    c.create(sql5);
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
         System.out.println("Creating statement...");
         stmt = conn.createStatement();
         String csql;
-        String drop = "DROP TABLE teams";
         csql = "CREATE TABLE teams(id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(20) NOT NULL, colour VARCHAR(20) NOT NULL)";
         String insert1 = "INSERT teams(name, colour) VALUES('MUFC', 'red')";
         String insert2 = "INSERT teams(name, colour) VALUES('MCFC', 'blue')";
         String insert3 = "INSERT teams(name, colour) VALUES('Liverpool', 'red')";
         String insert4 = "INSERT teams(name, colour) VALUES('Spurs', 'white')";
-        c.create(drop);
         c.create(csql);
         c.create(insert1);
         c.create(insert2);

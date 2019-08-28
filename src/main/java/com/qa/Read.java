@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public class Read extends DBManager {
 
-    public static ResultSet read(String query) throws SQLException {
+    public ResultSet read(String query) throws SQLException {
         try {
             stmt = conn.createStatement();
         } catch (SQLException e) {
