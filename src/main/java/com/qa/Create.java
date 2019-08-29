@@ -40,7 +40,7 @@ public class Create extends DBManager {
     }
 
     private ArrayList<String> contstraints(String s) {
-        ArrayList<String> cons = new ArrayList<>(); 
+        ArrayList<String> cons = new ArrayList<>();
         cons.add(s);
         while(sc.hasNextLine()){
             if (cons.contains("INT")){
