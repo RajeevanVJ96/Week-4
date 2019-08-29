@@ -7,41 +7,45 @@ import java.util.Scanner;
 
 public class Create extends DBManager {
 
+    Scanner sc = new Scanner(System.in);
+
     public void createTable(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter table name:");
-        String tablename = sc.nextLine();
-        HashMap<String, ArrayList<String>> fields;
-        System.out.println("Enter fields");
+        String tablename = readInputNl("Enter table name:");
+        HashMap<String, ArrayList<String>> fields = new HashMap<>();
+        String field;
+        System.out.println("Enter fields:");
         while(sc.hasNextLine()){
-            String field = sc.nextLine();
-            contstraints();
+            field = sc.nextLine();
+            String fieldType = readInputNl("Enter type:");
+            ArrayList<String> cons = contstraints(fieldType);
+            fields.put(field,cons);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("CREATE TABLE").append(tablename).append(("("));
+        for ( String f:fields.keySet()){
+            sb.append(f);
+            for (String s : fields.get(f)){
+                sb.append(s);
+            }
+            sb.append(',');
         }
 
 
-        StringBuilder sql = new StringBuilder();
-        sql.append("CREATE TABLE").append(name)
-
         try {
-            stmt.executeUpdate(sql);
+            stmt.executeUpdate(sb.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
-    private ArrayList<String> contstraints() {
-        ArrayList<String> cons = new ArrayList<>();
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Type:");
-        cons.add(sc.nextLine());
-        if (cons.contains("INT")){
-            System.out.println("Choose the constraints you want:");
-            System.out.println("1: PRIMARY KEY");
-            System.out.println("2: AUTO_INCREMENT");
-            System.out.println("3: UNIQUE");
-            System.out.println("4: NOT NULL");
-            System.out.println("5: FOREIGN KEY");
+    private ArrayList<String> contstraints(String s) {
+        ArrayList<String> cons = new ArrayList<>(); 
+        cons.add(s);
+        while(sc.hasNextLine()){
+            if (cons.contains("INT")){
+            repstuff();
+            System.out.println("5: AUTO_INCREMENT");
             String choice = sc.nextLine();
             char[] choices = choice.toCharArray();
             for (char c: choices){
@@ -50,7 +54,7 @@ public class Create extends DBManager {
                         cons.add("PRIMARY KEY");
                         break;
                     case '2':
-                        cons.add("AUTO_INCREMENT");
+                        cons.add("FOREIGN KEY");
                         break;
                     case '3':
                         cons.add("UNIQUE");
@@ -59,15 +63,41 @@ public class Create extends DBManager {
                         cons.add("NOT NULL");
                         break;
                     case '5':
-                        cons.add("FOREIGN KEY");
+                        cons.add("AUTO_INCREMENT");
+                        break;
+                    default:
+                        break;
                 }
             }
         }else{
+            System.out.println("Choose the number corresponding to the constraints you want:");
             System.out.println("1: PRIMARY KEY");
             System.out.println("2: FOREIGN KEY");
             System.out.println("3: UNIQUE");
             System.out.println("4: NOT NULL");
-        }
+            String choice = sc.nextLine();
+            char[] choices = choice.toCharArray();
+            for (char c: choices){
+                switch(c){
+                    case '1':
+                        cons.add("PRIMARY KEY");
+                        break;
+                    case '2':
+                        cons.add("FOREIGN KEY");
+                        break;
+                    case '3':
+                        cons.add("UNIQUE");
+                        break;
+                    case '4':
+                        cons.add("NOT NULL");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }}
+
+        return cons;
 
     }
 
@@ -81,6 +111,25 @@ public class Create extends DBManager {
 
 
    }
+
+   public void repstuff() {
+       System.out.println("Choose the number corresponding to the constraints you want:");
+       System.out.println("1: PRIMARY KEY");
+       System.out.println("2: FOREIGN KEY");
+       System.out.println("3: UNIQUE");
+       System.out.println("4: NOT NULL");
+
+   }
+
+    public String readInput(String message){
+        System.out.print(message);
+        return sc.nextLine();
+    }
+
+    public String readInputNl(String message){
+        System.out.println(message);
+        return sc.nextLine();
+    }
 
 }
 

@@ -13,6 +13,8 @@ public class App {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
         DBManager dbr = new DBManager();
+        Create c = new Create();
+        Read r = new Read();
         System.out.println("Connecting to database...");
         Connection conn = dbr.accessDB();
         Statement stmt = conn.createStatement();
@@ -25,19 +27,19 @@ public class App {
             sc.nextLine();
             switch(choice){
                 case 1:
-                    dbr.c.createTable();
+                    c.createTable();
                     options();
                     break;
                 case 2:
                     System.out.println("Enter SQL statement:");
                     String sq12 = sc.nextLine();
-                    dbr.c.create(sq12);
+                    c.create(sq12);
                     options();
                     break;
                 case 3:
                     System.out.println("Enter SQL statement:");
                     String sql3 = sc.nextLine();
-                    ResultSet rs = dbr.r.read(sql3);
+                    ResultSet rs = r.read(sql3);
                     while(rs.next()){
                         int id  = rs.getInt("id");
                         String team = rs.getString("name");
@@ -52,13 +54,13 @@ public class App {
                 case 4:
                     System.out.println("Enter SQL statement:");
                     String sql4 = sc.nextLine();
-                    dbr.c.create(sql4);
+                    c.create(sql4);
                     options();
                     break;
                 case 5:
                     System.out.println("Enter SQL statement");
                     String sql5 = sc.nextLine();
-                    dbr.c.create(sql5);
+                    c.create(sql5);
                     options();
                     break;
                 default:

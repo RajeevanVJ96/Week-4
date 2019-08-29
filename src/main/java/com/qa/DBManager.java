@@ -3,16 +3,14 @@ package com.qa;
 import java.sql.*;
 import java.util.Scanner;
 
-public class DBManager extends Constants {
+public class DBManager  {
 
-    Create c = new Create();
-    Read r = new Read();
+    static Connection conn = null;
+    static Statement stmt = null;
 
     public Connection accessDB() throws ClassNotFoundException, SQLException {
-        Class.forName(JDBC_DRIVER);
-        System.out.println("Connecting to database...");
+        Class.forName(Constants.JDBC_DRIVER);
         conn = DriverManager.getConnection(Constants.DB_URL,Constants.USER, Constants.PASS);
-        System.out.println("Creating statement...");
         return conn;
     }
 
