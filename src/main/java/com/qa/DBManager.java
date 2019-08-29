@@ -23,8 +23,8 @@ public class DBManager {
 
         System.out.println("Connecting to database...");
         conn = DriverManager.getConnection(DB_URL,USER,PASS);
-        String drop = "DROP TABLE teams";
-        c.create(drop);
+        System.out.println("Creating statement...");
+        stmt = conn.createStatement();
         Scanner sc = new Scanner(System.in);
         System.out.println("What do you wanna do?");
         System.out.println("1: ADD TABLE");
@@ -50,7 +50,16 @@ public class DBManager {
                 case 3:
                     System.out.println("Enter SQL statement:");
                     String sql3 = sc.nextLine();
-                    r.read(sql3);
+                    ResultSet rs = r.read(sql3);
+                    while(rs.next()){
+                        int id  = rs.getInt("id");
+                        String team = rs.getString("name");
+                        String colour = rs.getString("colour");
+
+                        //Display values
+                        System.out.println("ID: " + id + " Team: " + team + " Colour: " + colour);
+                    }
+                    rs.close();
                     break;
                 case 4:
                     System.out.println("Enter SQL statement:");
@@ -67,55 +76,32 @@ public class DBManager {
             }
         }
 
+        String drop = "DROP TABLE teams";
+        c.create(drop);
 
-        System.out.println("Creating statement...");
-        stmt = conn.createStatement();
-        String csql;
-        csql = "CREATE TABLE teams(id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(20) NOT NULL, colour VARCHAR(20) NOT NULL)";
-        String insert1 = "INSERT teams(name, colour) VALUES('MUFC', 'red')";
-        String insert2 = "INSERT teams(name, colour) VALUES('MCFC', 'blue')";
-        String insert3 = "INSERT teams(name, colour) VALUES('Liverpool', 'red')";
-        String insert4 = "INSERT teams(name, colour) VALUES('Spurs', 'white')";
-        c.create(csql);
-        c.create(insert1);
-        c.create(insert2);
-        c.create(insert3);
-        c.create(insert4);
-        String usql;
-        usql = "UPDATE teams SET colour = 'black' WHERE id = 4";
-        c.create(usql);
-        String dsql;
-        dsql = "DELETE FROM teams WHERE id = 2";
-        c.create(dsql);
-        String rsql;
-        rsql = "SELECT * FROM teams";
-        ResultSet rs = r.read(rsql);
+//        String csql;
+//        csql = "CREATE TABLE teams(id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(20) NOT NULL, colour VARCHAR(20) NOT NULL)";
+//        String insert1 = "INSERT teams(name, colour) VALUES('MUFC', 'red')";
+//        String insert2 = "INSERT teams(name, colour) VALUES('MCFC', 'blue')";
+//        String insert3 = "INSERT teams(name, colour) VALUES('Liverpool', 'red')";
+//        String insert4 = "INSERT teams(name, colour) VALUES('Spurs', 'white')";
+//        c.create(csql);
+//        c.create(insert1);
+//        c.create(insert2);
+//        c.create(insert3);
+//        c.create(insert4);
+//        String usql;
+//        usql = "UPDATE teams SET colour = 'black' WHERE id = 4";
+//        c.create(usql);
+//        String dsql;
+//        dsql = "DELETE FROM teams WHERE id = 2";
+//        c.create(dsql);
+//        String rsql;
+//        rsql = "SELECT * FROM teams";
 
-        while(rs.next()){
-            int id  = rs.getInt("id");
-            String team = rs.getString("name");
-            String colour = rs.getString("colour");
 
-            //Display values
-            System.out.println("ID: " + id + "\r\nTeam: " + team + "\r\nColour:" + colour);
-        }
-
-        rs.close();
         stmt.close();
         conn.close();
     }
-//
-//
-//    public static void create(String sql) throws SQLException {
-//        try {
-//            stmt = conn.createStatement();
-//            stmt.executeUpdate(sql);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//
-//    }
 
 }
